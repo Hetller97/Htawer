@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="style.css">
+  <title>إضافة مشارك</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      direction: rtl;
+      text-align: center;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+
+    input {
+      margin: 8px;
+      padding: 10px;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+    <button onclick="location.href='manage.html'">الانتقال إلى صفحة الإدارة</button>
+
+  <h1>إضافة مشارك</h1>
+
+  <input type="text" id="username" placeholder="اسم الحساب" /><br />
+  <input type="text" id="profileLink" placeholder="رابط الحساب" /><br />
+
+  <button id="addBtn">إضافة</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      set,
+      get,
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
+  authDomain: "htawer-2289b.firebaseapp.com",
+  databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
+  projectId: "htawer-2289b",
+  storageBucket: "htawer-2289b.firebasestorage.app",
+  messagingSenderId: "950146827456",
+  appId: "1:950146827456:web:4e440a303625080e2b1925",
+  measurementId: "G-E7483RPE05"
+};
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const usernameInput = document.getElementById("username");
+    const profileLinkInput = document.getElementById("profileLink");
+
+    async function addParticipant() {
+      const username = usernameInput.value.trim();
+      const profileLink = profileLinkInput.value.trim();
+
+      if (!username || !profileLink) {
+        alert("يرجى ملء كل الحقول.");
+        return;
+      }
+
+      // احصل على الرقم التالي تلقائيًا
+      const playersRef = ref(db, "players");
+      const snapshot = await get(playersRef);
+      const number = snapshot.exists() ? snapshot.size + 1 : 1;
+
+      const newPlayerKey = `player_${Date.now()}`;
+
+      await set(ref(db, "players/" + newPlayerKey), {
+        username,
+        profileLink,
+        number,
+        status: "مشارك",
+        points: 0,
+        equipment: [],
+      });
+
+      alert("تمت إضافة المشارك بنجاح ✅");
+      usernameInput.value = "";
+      profileLinkInput.value = "";
+    }
+
+    document.getElementById("addBtn").addEventListener("click", addParticipant);
+  </script>
+
+</body>
+</html>

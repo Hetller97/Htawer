@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="style.css">
+
+  <title>صفحة الإدارة</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      direction: rtl;
+      background: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 320px;
+      margin: 15px auto;
+      padding: 15px;
+      text-align: right;
+      position: relative;
+    }
+
+    .card.red {
+      background: #ffcccc;
+    }
+
+    .card h2 {
+      margin: 0 0 10px 0;
+    }
+
+    .card p {
+      margin: 5px 0;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    /* نافذة التعديل */
+    #editModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #editModal .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: right;
+    }
+
+    #editModal label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #editModal input[type="text"],
+    #editModal select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 5px;
+    }
+
+    #equipmentList {
+      margin-top: 5px;
+      list-style: none;
+      padding: 0;
+    }
+
+    #equipmentList li {
+      background: #eee;
+      padding: 5px 10px;
+      margin: 4px 0;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #equipmentList li button {
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      line-height: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #editModal .buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #editModal .buttons button {
+      margin: 0 10px;
+      padding: 8px 20px;
+    }
+  </style>
+</head>
+<body>
+    <button onclick="location.href='index.html'">العودة إلى تسجيل المشاركين</button>
+
+  <h1>صفحة الإدارة - إدارة المشاركين</h1>
+
+  <input type="text" id="searchInput" placeholder="ابحث باسم الحساب أو رقم اللاعب" style="width: 300px; padding: 10px; margin-bottom: 20px; border-radius: 10px; border: 2px solid #0b1d3f;">
+
+
+  <div id="playersContainer"></div>
+
+  <!-- نافذة تعديل بيانات اللاعب -->
+  <div id="editModal">
+    <div class="modal-content">
+      <h2>تعديل بيانات اللاعب</h2>
+
+      <label>اسم الحساب</label>
+      <input type="text" id="editUsername" />
+
+      <label>رابط الحساب</label>
+      <input type="text" id="editProfileLink" />
+
+      <label>الحالة</label>
+      <select id="editStatus">
+        <option value="مشارك">مشارك</option>
+        <option value="مقصي">مقصي</option>
+      </select>
+
+      <label>النقاط</label>
+      <input type="text" id="editPoints" />
+
+      <label>المعدات</label>
+      <input type="text" id="newEquipment" placeholder="أضف معدات واضغط Enter" />
+      <ul id="equipmentList"></ul>
+
+      <div class="buttons">
+        <button id="saveBtn">حفظ</button>
+        <button id="cancelBtn">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getDatabase,
+    ref,
+    onValue,
+    update
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+ 
+  const firebaseConfig = {
+  apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
+  authDomain: "htawer-2289b.firebaseapp.com",
+  databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
+  projectId: "htawer-2289b",
+  storageBucket: "htawer-2289b.firebasestorage.app",
+  messagingSenderId: "950146827456",
+  appId: "1:950146827456:web:4e440a303625080e2b1925",
+  measurementId: "G-E7483RPE05"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  // تخزين اللاعبين في متغير عام
+
+  const playersRef = ref(db, "players");
+
+  let players = {};
+
+// عند تحميل البيانات لأول مرة من Firebase:
+onValue(playersRef, (snapshot) => {
+  players = snapshot.val() || {};
+  renderPlayers(players);
+});
+
+// عند الكتابة في حقل البحث يتم تصفية النتائج تلقائيًا
+document.getElementById("searchInput").addEventListener("input", () => {
+  renderPlayers(players);
+});
+
+
+
+  const playersContainer = document.getElementById("playersContainer");
+
+  // عناصر نافذة التعديل
+  const editModal = document.getElementById("editModal");
+  const editUsername = document.getElementById("editUsername");
+  const editProfileLink = document.getElementById("editProfileLink");
+  const editStatus = document.getElementById("editStatus");
+  const editPoints = document.getElementById("editPoints");
+  const newEquipment = document.getElementById("newEquipment");
+  const equipmentList = document.getElementById("equipmentList");
+  const saveBtn = document.getElementById("saveBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
+
+  let currentEditingKey = null;
+  let currentEquipment = [];
+
+  // تحميل وعرض اللاعبين
+  function renderPlayers(players) {
+
+  const searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
+  playersContainer.innerHTML = "";
+
+
+  for (const key in players) {
+    const p = players[key];
+
+    // فلترة بالاسم أو الرقم إذا تم إدخال شيء في البحث
+    if (
+      searchValue &&
+      !p.username.toLowerCase().includes(searchValue) &&
+      !String(p.number).includes(searchValue)
+    ) {
+      continue; // تجاهل اللاعب الذي لا يطابق البحث
+    }
+
+    const card = document.createElement("div");
+    card.className = "card";
+    if (p.status === "مقصي") card.classList.add("red");
+
+    const equipmentText = (p.equipment && p.equipment.length > 0) ? p.equipment.join(", ") : "لا معدات";
+
+    card.innerHTML = `
+      <h2>${p.username} (#${p.number})</h2>
+      <p>النقاط: ${p.points ?? 0}</p>
+      <p>الحالة: ${p.status}</p>
+      <p>المعدات: ${equipmentText}</p>
+      <button data-key="${key}">تعديل</button>
+    `;
+
+    playersContainer.appendChild(card);
+
+    card.querySelector("button").addEventListener("click", () => openEditModal(key, p));
+  }
+}
+
+
+
+  // فتح نافذة التعديل وملء البيانات
+  function openEditModal(key, player) {
+    currentEditingKey = key;
+    editUsername.value = player.username;
+    editProfileLink.value = player.profileLink;
+    editStatus.value = player.status;
+    editPoints.value = player.points ?? 0;
+    currentEquipment = player.equipment ?? [];
+    renderEquipment();
+
+    editModal.style.display = "flex";
+  }
+
+  // عرض قائمة المعدات في نافذة التعديل
+  function renderEquipment() {
+    equipmentList.innerHTML = "";
+    currentEquipment.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+
+      const btn = document.createElement("button");
+      btn.textContent = "×";
+      btn.addEventListener("click", () => {
+        currentEquipment.splice(index, 1);
+        renderEquipment();
+      });
+
+      li.appendChild(btn);
+      equipmentList.appendChild(li);
+    });
+  }
+
+  // إضافة معدات جديدة عند الضغط Enter
+  newEquipment.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const val = newEquipment.value.trim();
+      if (val) {
+        currentEquipment.push(val);
+        newEquipment.value = "";
+        renderEquipment();
+      }
+    }
+  });
+
+  // حفظ التعديلات
+  saveBtn.addEventListener("click", async () => {
+    if (!currentEditingKey) return;
+
+    const updatedData = {
+      username: editUsername.value.trim(),
+      profileLink: editProfileLink.value.trim(),
+      status: editStatus.value,
+      points: Number(editPoints.value) || 0,
+      equipment: currentEquipment
+    };
+
+    await update(ref(db, "players/" + currentEditingKey), updatedData);
+    editModal.style.display = "none";
+  });
+
+  // إغلاق النافذة بدون حفظ
+  cancelBtn.addEventListener("click", () => {
+    editModal.style.display = "none";
+  });
+
+  // تحميل البيانات ومراقبة التغييرات
+
+  onValue(playersRef, (snapshot) => {
+    const players = snapshot.val() || {};
+    renderPlayers(players);
+  });
+
+</script>
+
+</body>
+</html>
