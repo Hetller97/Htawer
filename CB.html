@@ -1,569 +1,142 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="stylesheet" href="style.css">
-  <title>حساب نقاط اللاعب</title>
-  <style>
-    
-
-body {
-
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-    direction: rtl;
-
-    background: #0b1d3f;
-
-    color: #fff;
-
-    padding: 20px;
-
-    margin: 0;
-
-    min-height: 100vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-}
-
-
-
-/* تنسيق العناوين */
-
-h1 {
-
-    margin-bottom: 30px;
-
-    font-weight: 700;
-
-    text-shadow: 0 0 8px rgba(0,0,0,0.6);
-
-    letter-spacing: 1.2px;
-
-}
-
-
-
-/* البطاقات */
-
-.card {
-
-    background: #fff;
-
-    color: #000;
-
-    border-radius: 15px;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-
-    width: 350px;
-
-    margin: 15px auto;
-
-    padding: 20px 25px;
-
-    text-align: right;
-
-    position: relative;
-
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    cursor: default;
-
-}
-
-
-
-/* التفاعل مع البطاقة عند التمرير عليها */
-
-.card:hover {
-
-    transform: translateY(-8px);
-
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-
-}
-
-
-
-/* تخصيص لبطاقة حمراء */
-
-.card.red {
-
-    background: #ff4d4d;
-
-    color: #330000;
-
-    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
-
-}
-
-
-
-/* تنسيق العناوين داخل البطاقة */
-
-.card h2 {
-
-    margin: 0 0 15px 0;
-
-    font-size: 1.5rem;
-
-    font-weight: 700;
-
-    letter-spacing: 0.8px;
-
-}
-
-
-
-/* تنسيق الفقرات داخل البطاقة */
-
-.card p {
-
-    margin: 7px 0;
-
-    font-size: 1.1rem;
-
-    line-height: 1.4;
-
-}
-
-
-
-/* زر التعديل */
-
-button {
-
-    background: #0b1d3f;
-
-    border: none;
-
-    color: #fff;
-
-    padding: 10px 18px;
-
-    border-radius: 30px;
-
-    font-size: 1rem;
-
-    font-weight: 600;
-
-    margin-top: 15px;
-
-    cursor: pointer;
-
-    box-shadow: 0 5px 15px rgba(11, 29, 63, 0.6);
-
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
-}
-
-
-
-button:hover {
-
-    background: #142c6b;
-
-    box-shadow: 0 8px 20px rgba(20, 44, 107, 0.8);
-
-}
-
-
-
-/* نافذة التعديل */
-
-#editModal {
-
-    position: fixed;
-
-    top: 0; left: 0; right: 0; bottom: 0;
-
-    background: rgba(11, 29, 63, 0.85);
-
-    display: none;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 1000;
-
-}
-
-
-
-#editModal .modal-content {
-
-    background: #fff;
-
-    padding: 25px 30px;
-
-    border-radius: 20px;
-
-    width: 370px;
-
-    text-align: right;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-
-    color: #000;
-
-}
-
-
-
-#editModal h2 {
-
-    margin-top: 0;
-
-    font-weight: 700;
-
-    font-size: 1.6rem;
-
-    letter-spacing: 0.7px;
-
-}
-
-
-
-#editModal label {
-
-    display: block;
-
-    margin-top: 15px;
-
-    font-weight: 600;
-
-    font-size: 1rem;
-
-    color: #0b1d3f;
-
-}
-
-
-
-#editModal input[type="text"],
-
-#editModal select {
-
-    width: 100%;
-
-    padding: 8px 12px;
-
-    margin-top: 6px;
-
-    border: 2px solid #0b1d3f;
-
-    border-radius: 10px;
-
-    font-size: 1rem;
-
-    outline: none;
-
-    transition: border-color 0.3s ease;
-
-}
-
-
-
-#editModal input[type="text"]:focus,
-
-#editModal select:focus {
-
-    border-color: #142c6b;
-
-}
-
-
-
-/* قائمة المعدات */
-
-#equipmentList {
-
-    margin-top: 8px;
-
-    list-style: none;
-
-    padding: 0;
-
-    max-height: 100px;
-
-    overflow-y: auto;
-
-}
-
-
-
-#equipmentList li {
-
-    background: #0b1d3f;
-
-    color: white;
-
-    padding: 7px 12px;
-
-    margin: 6px 0;
-
-    border-radius: 12px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    font-weight: 600;
-
-    font-size: 0.95rem;
-
-}
-
-
-
-#equipmentList li button {
-
-    background: #ff4d4d;
-
-    color: white;
-
-    border: none;
-
-    border-radius: 50%;
-
-    width: 22px;
-
-    height: 22px;
-
-    line-height: 20px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
-
-}
-
-
-
-#equipmentList li button:hover {
-
-    background-color: #cc0000;
-
-}
-
-
-
-/* أزرار حفظ وإلغاء */
-
-#editModal .buttons {
-
-    margin-top: 25px;
-
-    text-align: center;
-
-}
-
-
-
-#editModal .buttons button {
-
-    margin: 0 12px;
-
-    padding: 10px 28px;
-
-    border-radius: 25px;
-
-    font-weight: 700;
-
-    background: #0b1d3f;
-
-    color: #fff;
-
-    box-shadow: 0 6px 18px rgba(11, 29, 63, 0.7);
-
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
-}
-
-
-
-#editModal .buttons button:hover {
-
-    background: #142c6b;
-
-    box-shadow: 0 8px 22px rgba(20, 44, 107, 0.9);
-
-}
-
-
-
-/* حاوية البطاقات */
-
-#playersContainer {
-
-    display: grid;
-
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-    gap: 20px;
-
-    width: 100%;
-
-    max-width: 1000px;
-
-    margin: auto;
-
-    padding: 10px;
-
-}
-
-
-
-/* استعلامات الوسائط لتهيئة التصميم على شاشات الهواتف */
-
-@media (max-width: 768px) {
-
-    body {
-
-        padding: 15px;
-
-    }
-
-
-
-    .card {
-
-        width: 100%; /* جعل البطاقة تأخذ عرض الشاشة */
-
-        padding: 15px;
-
-    }
-
-
-
-    h1 {
-
-        font-size: 1.8rem;
-
-    }
-
-
-
-    #playersContainer {
-
-        grid-template-columns: 1fr; /* جعل كل بطاقة في صف منفصل */
-
-        padding: 5px;
-
-    }
-
-
-
-    #editModal .modal-content {
-
-        width: 90%; /* تكبير العرض داخل النافذة */
-
-        padding: 20px;
-
-    }
-
-
-
-    button {
-
-        font-size: 0.9rem; /* تصغير حجم الخط في الأزرار */
-
-        padding: 8px 15px;
-
-    }
-
-}
-
-
-
-/* استعلام للهواتف الصغيرة */
-
-@media (max-width: 480px) {
-
-    h1 {
-
-        font-size: 1.5rem;
-
-    }
-
-
-
-    .card {
-
-        width: 100%; /* البطاقة تأخذ 100% من العرض */
-
-        padding: 12px;
-
-    }
-
-
-
-    button {
-
-        font-size: 0.85rem;
-
-        padding: 7px 12px;
-
-    }
-
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="style.css">
+  <title>حساب نقاط اللاعب</title>
+  <style>
+  body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f6fa;
+    direction: rtl;
+    color: #0b1d3f;
+    text-align: center;
+  }
+
+  h2 {
+    margin-bottom: 30px;
+    color: #0b1d3f;
+  }
+
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  input[type="number"] {
+    width: 90%;
+    max-width: 400px;
+    padding: 12px;
+    margin: 8px auto;
+    display: block;
+    border: 2px solid #0b1d3f;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+
+  button {
+    background-color: #0b1d3f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 15px 10px;
+  }
+
+  button:hover {
+    background-color: #142c66;
+  }
+
+  #copyBtn {
+    display: none;
+    background-color: #2196f3;
+  }
+
+  #copyBtn:hover {
+    background-color: #0d8ae3;
+  }
+
+  .output {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 30px;
+    white-space: pre-line;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  @media (min-width: 1024px) {
+    input[type="number"] {
+      max-width: 500px;
     }
-  </style>
+
+    button {
+      font-size: 18px;
+    }
+
+    .output {
+      font-size: 18px;
+    }
+  }
+
+  </style>
 </head>
 <body>
-  <button onclick="window.location.href='index.html'">🔁 انتقل إلى صفحة البطاقة</button>
+  <button onclick="window.location.href='index.html'">🔁 انتقل إلى صفحة البطاقة</button>
 
 
-  <h2>🎮 حساب نقاط اللاعب</h2>
+  <h2>🎮 حساب نقاط اللاعب</h2>
 
-  <label>رقم اللاعب:</label>
-  <input type="number" id="playerNumber">
+  <label>رقم اللاعب:</label>
+  <input type="number" id="playerNumber">
 
-  <label>CB الموزعة على الهجوم:</label>
-  <input type="number" id="attackCB">
+  <label>CB الموزعة على الهجوم:</label>
+  <input type="number" id="attackCB">
 
-  <label>CB الموزعة على الدفاع:</label>
-  <input type="number" id="defenseCB">
+  <label>CB الموزعة على الدفاع:</label>
+  <input type="number" id="defenseCB">
 
-  <label>CB الموزعة على الصحة:</label>
-  <input type="number" id="healthCB">
+  <label>CB الموزعة على الصحة:</label>
+  <input type="number" id="healthCB">
 
-  <label>CB الموزعة على الخبرة:</label>
-  <input type="number" id="xpCB">
+  <label>CB الموزعة على الخبرة:</label>
+  <input type="number" id="xpCB">
 
-  <button onclick="calculateStats()">احسب وأعرض البطاقة</button>
-  <button id="copyBtn" onclick="copyCard()">📋 نسخ البطاقة</button>
+  <button onclick="calculateStats()">احسب وأعرض البطاقة</button>
+  <button id="copyBtn" onclick="copyCard()">📋 نسخ البطاقة</button>
 
-  <div class="output" id="result"></div>
+  <div class="output" id="result"></div>
 
-  <script>
-    let currentCard = '';
+  <script>
+    let currentCard = '';
 
-    function calculateStats() {
-      const playerNumber = document.getElementById('playerNumber').value;
-      const attackCB = parseFloat(document.getElementById('attackCB').value) || 0;
-      const defenseCB = parseFloat(document.getElementById('defenseCB').value) || 0;
-      const healthCB = parseFloat(document.getElementById('healthCB').value) || 0;
-      const xpCB = parseFloat(document.getElementById('xpCB').value) || 0;
+    function calculateStats() {
+      const playerNumber = document.getElementById('playerNumber').value;
+      const attackCB = parseFloat(document.getElementById('attackCB').value) || 0;
+      const defenseCB = parseFloat(document.getElementById('defenseCB').value) || 0;
+      const healthCB = parseFloat(document.getElementById('healthCB').value) || 0;
+      const xpCB = parseFloat(document.getElementById('xpCB').value) || 0;
 
-      const atk = attackCB / 4;
-      const def = defenseCB / 3;
-      const blockCount = Math.floor(defenseCB / 50);
-      const hp = healthCB;
-      const xp = xpCB;
+      const atk = attackCB / 4;
+      const def = defenseCB / 3;
+      const blockCount = Math.floor(defenseCB / 50);
+      const hp = healthCB;
+      const xp = xpCB;
 
-      currentCard = `
+      currentCard = `
 🎮 بطاقة اللاعب
 
 رقم: ${playerNumber}
@@ -573,20 +146,20 @@ button:hover {
 الدفاع: ${def.toFixed(2)}
 عدد مرات التصدي: ${blockCount}
 الخبرة: ${xp}
-      `;
+      `;
 
-      document.getElementById('result').textContent = currentCard;
-      document.getElementById('copyBtn').style.display = 'inline-block';
-    }
+      document.getElementById('result').textContent = currentCard;
+      document.getElementById('copyBtn').style.display = 'inline-block';
+    }
 
-    function copyCard() {
-      navigator.clipboard.writeText(currentCard).then(() => {
-        alert("✅ تم نسخ البطاقة بنجاح!");
-      }).catch(() => {
-        alert("❌ فشل النسخ، حاول مجددًا.");
-      });
-    }
-  </script>
+    function copyCard() {
+      navigator.clipboard.writeText(currentCard).then(() => {
+        alert("✅ تم نسخ البطاقة بنجاح!");
+      }).catch(() => {
+        alert("❌ فشل النسخ، حاول مجددًا.");
+      });
+    }
+  </script>
 
 </body>
 </html>
