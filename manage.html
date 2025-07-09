@@ -6,142 +6,338 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>صفحة الإدارة</title>
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f6fa;
-      direction: rtl;
-      color: #0b1d3f;
-    }
+    /* إعدادات عامة */
 
-    h1 {
-      text-align: center;
-      color: #0b1d3f;
-      margin-bottom: 30px;
-    }
+body {
 
-    button {
-      background-color: #0b1d3f;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      margin-bottom: 20px;
-    }
+  font-family: 'Cairo', sans-serif;
 
-    button:hover {
-      background-color: #142c66;
-    }
+  margin: 0;
 
-    #searchInput {
-      display: block;
-      margin: 0 auto 30px auto;
-      border: 2px solid #0b1d3f;
-      border-radius: 10px;
-      padding: 12px;
-      width: 90%;
-      max-width: 400px;
-      font-size: 16px;
-    }
+  padding: 20px;
 
-    #playersContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
+  background-color: #f4f6fa;
 
-    .card {
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      text-align: right;
-      position: relative;
-      transition: 0.3s;
-    }
+  direction: rtl;
 
-    .card h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
+  color: #0b1d3f;
 
-    .card p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #333;
-    }
+}
 
-    .card button {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      background-color: #2196f3;
-      font-size: 14px;
-      padding: 8px 12px;
-    }
 
-    .card.red {
-      border-right: 5px solid #e53935;
-      background-color: #fff4f4;
-    }
 
-    #editModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+h1 {
 
-    .modal-content {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
+  text-align: center;
 
-    .modal-content h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  color: #0b1d3f;
 
-    .modal-content label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+  margin-bottom: 30px;
 
-    .modal-content input,
-    .modal-content select,
-    .modal-content textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-    }
+}
 
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 25px;
-    }
 
-    .buttons button {
-      width: 48%;
-      font-size: 16px;
-    }
+
+/* زر العودة */
+
+button {
+
+  background-color: #0b1d3f;
+
+  color: white;
+
+  padding: 10px 20px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+button:hover {
+
+  background-color: #142c66;
+
+}
+
+
+
+/* حقل البحث */
+
+#searchInput {
+
+  display: block;
+
+  margin: 0 auto 30px auto;
+
+  border: 2px solid #0b1d3f;
+
+  border-radius: 10px;
+
+  padding: 12px;
+
+  width: 90%;
+
+  max-width: 400px;
+
+  font-size: 16px;
+
+}
+
+
+
+/* بطاقات اللاعبين */
+
+#playersContainer {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 20px;
+
+}
+
+
+
+.card {
+
+  background-color: white;
+
+  border-radius: 15px;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  padding: 20px;
+
+  text-align: right;
+
+  position: relative;
+
+  transition: 0.3s;
+
+}
+
+
+
+.card h2 {
+
+  font-size: 20px;
+
+  margin-bottom: 10px;
+
+}
+
+
+
+.card p {
+
+  margin: 5px 0;
+
+  font-size: 14px;
+
+  color: #333;
+
+}
+
+
+
+.card button {
+
+  position: absolute;
+
+  bottom: 15px;
+
+  left: 15px;
+
+  background-color: #2196f3;
+
+  font-size: 14px;
+
+  padding: 8px 12px;
+
+}
+
+
+
+.card.red {
+
+  border-right: 5px solid #e53935;
+
+  background-color: #fff4f4;
+
+}
+
+
+
+/* نافذة التعديل */
+
+#editModal {
+
+  display: none;
+
+  position: fixed;
+
+  top: 0;
+
+  right: 0;
+
+  left: 0;
+
+  bottom: 0;
+
+  background-color: rgba(0, 0, 0, 0.4);
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 1000;
+
+}
+
+
+
+.modal-content {
+
+  background-color: #fff;
+
+  padding: 30px;
+
+  border-radius: 15px;
+
+  width: 90%;
+
+  max-width: 500px;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+}
+
+
+
+.modal-content h2 {
+
+  text-align: center;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.modal-content label {
+
+  display: block;
+
+  margin-top: 15px;
+
+  font-weight: bold;
+
+}
+
+
+
+.modal-content input,
+
+.modal-content select {
+
+  width: 100%;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  border: 1px solid #ccc;
+
+  margin-top: 5px;
+
+}
+
+
+
+#equipmentList {
+
+  list-style: none;
+
+  padding: 0;
+
+  margin-top: 10px;
+
+}
+
+
+
+#equipmentList li {
+
+  background-color: #f0f0f0;
+
+  padding: 8px 12px;
+
+  margin-bottom: 8px;
+
+  border-radius: 8px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+
+
+#equipmentList li button {
+
+  background-color: #e53935;
+
+  padding: 4px 8px;
+
+  font-size: 14px;
+
+  border-radius: 50%;
+
+}
+
+
+
+.buttons {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 25px;
+
+}
+
+
+
+.buttons button {
+
+  width: 48%;
+
+  font-size: 16px;
+
+}
+
+
+
+ 
+
+   
+
   </style>
 </head>
 <body>
