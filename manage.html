@@ -1,741 +1,623 @@
 <!DOCTYPE html>
+
 <html lang="ar">
+
 <head>
+
   <meta charset="UTF-8" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="style.css">
 
+
+
   <title>صفحة الإدارة</title>
+
   <style>
-  
-  
 
+  /* إعدادات عامة */
 body {
-
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-    direction: rtl;
-
-    background: #0b1d3f;
-
-    color: #fff;
-
-    padding: 20px;
-
-    margin: 0;
-
-    min-height: 100vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f6fa;
+  direction: rtl;
+  color: #0b1d3f;
 }
-
-
-
-/* تنسيق العناوين */
 
 h1 {
-
-    margin-bottom: 30px;
-
-    font-weight: 700;
-
-    text-shadow: 0 0 8px rgba(0,0,0,0.6);
-
-    letter-spacing: 1.2px;
-
+  text-align: center;
+  color: #0b1d3f;
+  margin-bottom: 30px;
 }
 
-
-
-/* البطاقات */
-
-.card {
-
-    background: #fff;
-
-    color: #000;
-
-    border-radius: 15px;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-
-    width: 350px;
-
-    margin: 15px auto;
-
-    padding: 20px 25px;
-
-    text-align: right;
-
-    position: relative;
-
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    cursor: default;
-
-}
-
-
-
-/* التفاعل مع البطاقة عند التمرير عليها */
-
-.card:hover {
-
-    transform: translateY(-8px);
-
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-
-}
-
-
-
-/* تخصيص لبطاقة حمراء */
-
-.card.red {
-
-    background: #ff4d4d;
-
-    color: #330000;
-
-    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
-
-}
-
-
-
-/* تنسيق العناوين داخل البطاقة */
-
-.card h2 {
-
-    margin: 0 0 15px 0;
-
-    font-size: 1.5rem;
-
-    font-weight: 700;
-
-    letter-spacing: 0.8px;
-
-}
-
-
-
-/* تنسيق الفقرات داخل البطاقة */
-
-.card p {
-
-    margin: 7px 0;
-
-    font-size: 1.1rem;
-
-    line-height: 1.4;
-
-}
-
-
-
-/* زر التعديل */
-
+/* زر العودة */
 button {
-
-    background: #0b1d3f;
-
-    border: none;
-
-    color: #fff;
-
-    padding: 10px 18px;
-
-    border-radius: 30px;
-
-    font-size: 1rem;
-
-    font-weight: 600;
-
-    margin-top: 15px;
-
-    cursor: pointer;
-
-    box-shadow: 0 5px 15px rgba(11, 29, 63, 0.6);
-
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
+  background-color: #0b1d3f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-bottom: 20px;
 }
-
-
 
 button:hover {
-
-    background: #142c6b;
-
-    box-shadow: 0 8px 20px rgba(20, 44, 107, 0.8);
-
+  background-color: #142c66;
 }
 
+/* حقل البحث */
+#searchInput {
+  display: block;
+  margin: 0 auto 30px auto;
+  border: 2px solid #0b1d3f;
+  border-radius: 10px;
+  padding: 12px;
+  width: 90%;
+  max-width: 400px;
+  font-size: 16px;
+}
 
+/* بطاقات اللاعبين */
+#playersContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: right;
+  position: relative;
+  transition: 0.3s;
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.card button {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background-color: #2196f3;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+.card.red {
+  border-right: 5px solid #e53935;
+  background-color: #fff4f4;
+}
 
 /* نافذة التعديل */
-
 #editModal {
-
-    position: fixed;
-
-    top: 0; left: 0; right: 0; bottom: 0;
-
-    background: rgba(11, 29, 63, 0.85);
-
-    display: none;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 1000;
-
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-
-
-#editModal .modal-content {
-
-    background: #fff;
-
-    padding: 25px 30px;
-
-    border-radius: 20px;
-
-    width: 370px;
-
-    text-align: right;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-
-    color: #000;
-
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-
-
-#editModal h2 {
-
-    margin-top: 0;
-
-    font-weight: 700;
-
-    font-size: 1.6rem;
-
-    letter-spacing: 0.7px;
-
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-
-
-#editModal label {
-
-    display: block;
-
-    margin-top: 15px;
-
-    font-weight: 600;
-
-    font-size: 1rem;
-
-    color: #0b1d3f;
-
+.modal-content label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
 }
 
-
-
-#editModal input[type="text"],
-
-#editModal select {
-
-    width: 100%;
-
-    padding: 8px 12px;
-
-    margin-top: 6px;
-
-    border: 2px solid #0b1d3f;
-
-    border-radius: 10px;
-
-    font-size: 1rem;
-
-    outline: none;
-
-    transition: border-color 0.3s ease;
-
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
 }
-
-
-
-#editModal input[type="text"]:focus,
-
-#editModal select:focus {
-
-    border-color: #142c6b;
-
-}
-
-
-
-/* قائمة المعدات */
 
 #equipmentList {
-
-    margin-top: 8px;
-
-    list-style: none;
-
-    padding: 0;
-
-    max-height: 100px;
-
-    overflow-y: auto;
-
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
 }
-
-
 
 #equipmentList li {
-
-    background: #0b1d3f;
-
-    color: white;
-
-    padding: 7px 12px;
-
-    margin: 6px 0;
-
-    border-radius: 12px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    font-weight: 600;
-
-    font-size: 0.95rem;
-
+  background-color: #f0f0f0;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
-
 
 #equipmentList li button {
-
-    background: #ff4d4d;
-
-    color: white;
-
-    border: none;
-
-    border-radius: 50%;
-
-    width: 22px;
-
-    height: 22px;
-
-    line-height: 20px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
-
+  background-color: #e53935;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 50%;
 }
 
-
-
-#equipmentList li button:hover {
-
-    background-color: #cc0000;
-
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
 }
 
-
-
-/* أزرار حفظ وإلغاء */
-
-#editModal .buttons {
-
-    margin-top: 25px;
-
-    text-align: center;
-
+.buttons button {
+  width: 48%;
+  font-size: 16px;
 }
 
-
-
-#editModal .buttons button {
-
-    margin: 0 12px;
-
-    padding: 10px 28px;
-
-    border-radius: 25px;
-
-    font-weight: 700;
-
-    background: #0b1d3f;
-
-    color: #fff;
-
-    box-shadow: 0 6px 18px rgba(11, 29, 63, 0.7);
-
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
-}
-
-
-
-#editModal .buttons button:hover {
-
-    background: #142c6b;
-
-    box-shadow: 0 8px 22px rgba(20, 44, 107, 0.9);
-
-}
-
-
-
-/* حاوية البطاقات */
-
-#playersContainer {
-
-    display: grid;
-
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-    gap: 20px;
-
-    width: 100%;
-
-    max-width: 1000px;
-
-    margin: auto;
-
-    padding: 10px;
-
-}
-
-
-
-/* استعلامات الوسائط لتهيئة التصميم على شاشات الهواتف */
-
-@media (max-width: 768px) {
-
-    body {
-
-        padding: 15px;
-
-    }
-
-
-
-    .card {
-
-        width: 100%; /* جعل البطاقة تأخذ عرض الشاشة */
-
-        padding: 15px;
-
-    }
-
-
-
-    h1 {
-
-        font-size: 1.8rem;
-
-    }
-
-
-
-    #playersContainer {
-
-        grid-template-columns: 1fr; /* جعل كل بطاقة في صف منفصل */
-
-        padding: 5px;
-
-    }
-
-
-
-    #editModal .modal-content {
-
-        width: 90%; /* تكبير العرض داخل النافذة */
-
-        padding: 20px;
-
-    }
-
-
-
-    button {
-
-        font-size: 0.9rem; /* تصغير حجم الخط في الأزرار */
-
-        padding: 8px 15px;
-
-    }
-
-}
-
-
-
-/* استعلام للهواتف الصغيرة */
-
-@media (max-width: 480px) {
-
-    h1 {
-
-        font-size: 1.5rem;
-
-    }
-
-
-
-    .card {
-
-        width: 100%; /* البطاقة تأخذ 100% من العرض */
-
-        padding: 12px;
-
-    }
-
-
-
-    button {
-
-        font-size: 0.85rem;
-
-        padding: 7px 12px;
-
-    }
-
-  }
+ 
   </style>
+
 </head>
+
 <body>
+
     <button onclick="location.href='index.html'">العودة إلى تسجيل المشاركين</button>
 
+
+
   <h1>صفحة الإدارة - إدارة المشاركين</h1>
+
+
 
   <input type="text" id="searchInput" placeholder="ابحث باسم الحساب أو رقم اللاعب" style="width: 300px; padding: 10px; margin-bottom: 20px; border-radius: 10px; border: 2px solid #0b1d3f;">
 
 
+
+
+
   <div id="playersContainer"></div>
 
+
+
   <!-- نافذة تعديل بيانات اللاعب -->
+
   <div id="editModal">
+
     <div class="modal-content">
+
       <h2>تعديل بيانات اللاعب</h2>
 
+
+
       <label>اسم الحساب</label>
+
       <input type="text" id="editUsername" />
 
+
+
       <label>رابط الحساب</label>
+
       <input type="text" id="editProfileLink" />
 
+
+
       <label>الحالة</label>
+
       <select id="editStatus">
+
         <option value="مشارك">مشارك</option>
+
         <option value="مقصي">مقصي</option>
+
       </select>
 
+
+
       <label>النقاط</label>
+
       <input type="text" id="editPoints" />
 
+
+
       <label>المعدات</label>
+
       <input type="text" id="newEquipment" placeholder="أضف معدات واضغط Enter" />
+
       <ul id="equipmentList"></ul>
 
+
+
       <div class="buttons">
+
         <button id="saveBtn">حفظ</button>
+
         <button id="cancelBtn">إلغاء</button>
+
       </div>
+
     </div>
+
   </div>
 
+
+
 <script type="module">
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
   import {
+
     getDatabase,
+
     ref,
+
     onValue,
+
     update
+
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
  
+
   const firebaseConfig = {
+
   apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
+
   authDomain: "htawer-2289b.firebaseapp.com",
+
   databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
+
   projectId: "htawer-2289b",
+
   storageBucket: "htawer-2289b.firebasestorage.app",
+
   messagingSenderId: "950146827456",
+
   appId: "1:950146827456:web:4e440a303625080e2b1925",
+
   measurementId: "G-E7483RPE05"
+
 };
 
+
+
   const app = initializeApp(firebaseConfig);
+
   const db = getDatabase(app);
+
   // تخزين اللاعبين في متغير عام
+
+
 
   const playersRef = ref(db, "players");
 
+
+
   let players = {};
 
+
+
 // عند تحميل البيانات لأول مرة من Firebase:
+
 onValue(playersRef, (snapshot) => {
+
   players = snapshot.val() || {};
+
   renderPlayers(players);
+
 });
 
+
+
 // عند الكتابة في حقل البحث يتم تصفية النتائج تلقائيًا
+
 document.getElementById("searchInput").addEventListener("input", () => {
+
   renderPlayers(players);
+
 });
+
+
+
+
 
 
 
   const playersContainer = document.getElementById("playersContainer");
 
+
+
   // عناصر نافذة التعديل
+
   const editModal = document.getElementById("editModal");
+
   const editUsername = document.getElementById("editUsername");
+
   const editProfileLink = document.getElementById("editProfileLink");
+
   const editStatus = document.getElementById("editStatus");
+
   const editPoints = document.getElementById("editPoints");
+
   const newEquipment = document.getElementById("newEquipment");
+
   const equipmentList = document.getElementById("equipmentList");
+
   const saveBtn = document.getElementById("saveBtn");
+
   const cancelBtn = document.getElementById("cancelBtn");
 
+
+
   let currentEditingKey = null;
+
   let currentEquipment = [];
 
+
+
   // تحميل وعرض اللاعبين
+
   function renderPlayers(players) {
 
+
+
   const searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
+
   playersContainer.innerHTML = "";
 
 
+
+
+
   for (const key in players) {
+
     const p = players[key];
 
+
+
     // فلترة بالاسم أو الرقم إذا تم إدخال شيء في البحث
+
     if (
+
       searchValue &&
+
       !p.username.toLowerCase().includes(searchValue) &&
+
       !String(p.number).includes(searchValue)
+
     ) {
+
       continue; // تجاهل اللاعب الذي لا يطابق البحث
+
     }
 
+
+
     const card = document.createElement("div");
+
     card.className = "card";
+
     if (p.status === "مقصي") card.classList.add("red");
+
+
 
     const equipmentText = (p.equipment && p.equipment.length > 0) ? p.equipment.join(", ") : "لا معدات";
 
+
+
     card.innerHTML = `
+
       <h2>${p.username} (#${p.number})</h2>
+
       <p>النقاط: ${p.points ?? 0}</p>
+
       <p>الحالة: ${p.status}</p>
+
       <p>المعدات: ${equipmentText}</p>
+
       <button data-key="${key}">تعديل</button>
+
     `;
+
+
 
     playersContainer.appendChild(card);
 
+
+
     card.querySelector("button").addEventListener("click", () => openEditModal(key, p));
+
   }
+
 }
 
 
 
+
+
+
+
   // فتح نافذة التعديل وملء البيانات
+
   function openEditModal(key, player) {
+
     currentEditingKey = key;
+
     editUsername.value = player.username;
+
     editProfileLink.value = player.profileLink;
+
     editStatus.value = player.status;
+
     editPoints.value = player.points ?? 0;
+
     currentEquipment = player.equipment ?? [];
+
     renderEquipment();
 
+
+
     editModal.style.display = "flex";
+
   }
+
+
 
   // عرض قائمة المعدات في نافذة التعديل
+
   function renderEquipment() {
+
     equipmentList.innerHTML = "";
+
     currentEquipment.forEach((item, index) => {
+
       const li = document.createElement("li");
+
       li.textContent = item;
 
+
+
       const btn = document.createElement("button");
+
       btn.textContent = "×";
+
       btn.addEventListener("click", () => {
+
         currentEquipment.splice(index, 1);
+
         renderEquipment();
+
       });
 
+
+
       li.appendChild(btn);
+
       equipmentList.appendChild(li);
+
     });
+
   }
 
+
+
   // إضافة معدات جديدة عند الضغط Enter
+
   newEquipment.addEventListener("keypress", e => {
+
     if (e.key === "Enter") {
+
       e.preventDefault();
+
       const val = newEquipment.value.trim();
+
       if (val) {
+
         currentEquipment.push(val);
+
         newEquipment.value = "";
+
         renderEquipment();
+
       }
+
     }
+
   });
+
+
 
   // حفظ التعديلات
+
   saveBtn.addEventListener("click", async () => {
+
     if (!currentEditingKey) return;
 
+
+
     const updatedData = {
+
       username: editUsername.value.trim(),
+
       profileLink: editProfileLink.value.trim(),
+
       status: editStatus.value,
+
       points: Number(editPoints.value) || 0,
+
       equipment: currentEquipment
+
     };
 
+
+
     await update(ref(db, "players/" + currentEditingKey), updatedData);
+
     editModal.style.display = "none";
+
   });
 
+
+
   // إغلاق النافذة بدون حفظ
+
   cancelBtn.addEventListener("click", () => {
+
     editModal.style.display = "none";
+
   });
+
+
 
   // تحميل البيانات ومراقبة التغييرات
 
+
+
   onValue(playersRef, (snapshot) => {
+
     const players = snapshot.val() || {};
+
     renderPlayers(players);
+
   });
+
+
 
 </script>
 
+
+
 </body>
+
 </html>
+
+
+اريد تصميم css متناسق و جميل لهده الصفحة و تكون قياساتهم مناسبة لجميع الأجهزة. 
+
+و يكون سهل الاستخدام وواضح .
