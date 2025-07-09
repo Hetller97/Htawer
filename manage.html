@@ -7,112 +7,520 @@
 
   <title>صفحة الإدارة</title>
   <style>
-    body {
-      font-family: sans-serif;
-      direction: rtl;
-      background: #f5f5f5;
-      padding: 20px;
-      text-align: center;
-    }
+  
+  
 
-    .card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 320px;
-      margin: 15px auto;
-      padding: 15px;
-      text-align: right;
-      position: relative;
-    }
+body {
 
-    .card.red {
-      background: #ffcccc;
-    }
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    .card h2 {
-      margin: 0 0 10px 0;
-    }
+    direction: rtl;
 
-    .card p {
-      margin: 5px 0;
-    }
+    background: #0b1d3f;
 
-    button {
-      margin-top: 10px;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
+    color: #fff;
 
-    /* نافذة التعديل */
-    #editModal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+    padding: 20px;
 
-    #editModal .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 350px;
-      text-align: right;
-    }
+    margin: 0;
 
-    #editModal label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
+    min-height: 100vh;
 
-    #editModal input[type="text"],
-    #editModal select {
-      width: 100%;
-      padding: 6px;
-      margin-top: 5px;
-    }
+    display: flex;
 
-    #equipmentList {
-      margin-top: 5px;
-      list-style: none;
-      padding: 0;
-    }
+    flex-direction: column;
 
-    #equipmentList li {
-      background: #eee;
-      padding: 5px 10px;
-      margin: 4px 0;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    align-items: center;
 
-    #equipmentList li button {
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      line-height: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+}
 
-    #editModal .buttons {
-      margin-top: 20px;
-      text-align: center;
-    }
 
-    #editModal .buttons button {
-      margin: 0 10px;
-      padding: 8px 20px;
-    }
+
+/* تنسيق العناوين */
+
+h1 {
+
+    margin-bottom: 30px;
+
+    font-weight: 700;
+
+    text-shadow: 0 0 8px rgba(0,0,0,0.6);
+
+    letter-spacing: 1.2px;
+
+}
+
+
+
+/* البطاقات */
+
+.card {
+
+    background: #fff;
+
+    color: #000;
+
+    border-radius: 15px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+    width: 350px;
+
+    margin: 15px auto;
+
+    padding: 20px 25px;
+
+    text-align: right;
+
+    position: relative;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    cursor: default;
+
+}
+
+
+
+/* التفاعل مع البطاقة عند التمرير عليها */
+
+.card:hover {
+
+    transform: translateY(-8px);
+
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+
+}
+
+
+
+/* تخصيص لبطاقة حمراء */
+
+.card.red {
+
+    background: #ff4d4d;
+
+    color: #330000;
+
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
+
+}
+
+
+
+/* تنسيق العناوين داخل البطاقة */
+
+.card h2 {
+
+    margin: 0 0 15px 0;
+
+    font-size: 1.5rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+
+}
+
+
+
+/* تنسيق الفقرات داخل البطاقة */
+
+.card p {
+
+    margin: 7px 0;
+
+    font-size: 1.1rem;
+
+    line-height: 1.4;
+
+}
+
+
+
+/* زر التعديل */
+
+button {
+
+    background: #0b1d3f;
+
+    border: none;
+
+    color: #fff;
+
+    padding: 10px 18px;
+
+    border-radius: 30px;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    margin-top: 15px;
+
+    cursor: pointer;
+
+    box-shadow: 0 5px 15px rgba(11, 29, 63, 0.6);
+
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+
+
+button:hover {
+
+    background: #142c6b;
+
+    box-shadow: 0 8px 20px rgba(20, 44, 107, 0.8);
+
+}
+
+
+
+/* نافذة التعديل */
+
+#editModal {
+
+    position: fixed;
+
+    top: 0; left: 0; right: 0; bottom: 0;
+
+    background: rgba(11, 29, 63, 0.85);
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 1000;
+
+}
+
+
+
+#editModal .modal-content {
+
+    background: #fff;
+
+    padding: 25px 30px;
+
+    border-radius: 20px;
+
+    width: 370px;
+
+    text-align: right;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+    color: #000;
+
+}
+
+
+
+#editModal h2 {
+
+    margin-top: 0;
+
+    font-weight: 700;
+
+    font-size: 1.6rem;
+
+    letter-spacing: 0.7px;
+
+}
+
+
+
+#editModal label {
+
+    display: block;
+
+    margin-top: 15px;
+
+    font-weight: 600;
+
+    font-size: 1rem;
+
+    color: #0b1d3f;
+
+}
+
+
+
+#editModal input[type="text"],
+
+#editModal select {
+
+    width: 100%;
+
+    padding: 8px 12px;
+
+    margin-top: 6px;
+
+    border: 2px solid #0b1d3f;
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+
+    outline: none;
+
+    transition: border-color 0.3s ease;
+
+}
+
+
+
+#editModal input[type="text"]:focus,
+
+#editModal select:focus {
+
+    border-color: #142c6b;
+
+}
+
+
+
+/* قائمة المعدات */
+
+#equipmentList {
+
+    margin-top: 8px;
+
+    list-style: none;
+
+    padding: 0;
+
+    max-height: 100px;
+
+    overflow-y: auto;
+
+}
+
+
+
+#equipmentList li {
+
+    background: #0b1d3f;
+
+    color: white;
+
+    padding: 7px 12px;
+
+    margin: 6px 0;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    font-weight: 600;
+
+    font-size: 0.95rem;
+
+}
+
+
+
+#equipmentList li button {
+
+    background: #ff4d4d;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 50%;
+
+    width: 22px;
+
+    height: 22px;
+
+    line-height: 20px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+
+}
+
+
+
+#equipmentList li button:hover {
+
+    background-color: #cc0000;
+
+}
+
+
+
+/* أزرار حفظ وإلغاء */
+
+#editModal .buttons {
+
+    margin-top: 25px;
+
+    text-align: center;
+
+}
+
+
+
+#editModal .buttons button {
+
+    margin: 0 12px;
+
+    padding: 10px 28px;
+
+    border-radius: 25px;
+
+    font-weight: 700;
+
+    background: #0b1d3f;
+
+    color: #fff;
+
+    box-shadow: 0 6px 18px rgba(11, 29, 63, 0.7);
+
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+
+
+#editModal .buttons button:hover {
+
+    background: #142c6b;
+
+    box-shadow: 0 8px 22px rgba(20, 44, 107, 0.9);
+
+}
+
+
+
+/* حاوية البطاقات */
+
+#playersContainer {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 20px;
+
+    width: 100%;
+
+    max-width: 1000px;
+
+    margin: auto;
+
+    padding: 10px;
+
+}
+
+
+
+/* استعلامات الوسائط لتهيئة التصميم على شاشات الهواتف */
+
+@media (max-width: 768px) {
+
+    body {
+
+        padding: 15px;
+
+    }
+
+
+
+    .card {
+
+        width: 100%; /* جعل البطاقة تأخذ عرض الشاشة */
+
+        padding: 15px;
+
+    }
+
+
+
+    h1 {
+
+        font-size: 1.8rem;
+
+    }
+
+
+
+    #playersContainer {
+
+        grid-template-columns: 1fr; /* جعل كل بطاقة في صف منفصل */
+
+        padding: 5px;
+
+    }
+
+
+
+    #editModal .modal-content {
+
+        width: 90%; /* تكبير العرض داخل النافذة */
+
+        padding: 20px;
+
+    }
+
+
+
+    button {
+
+        font-size: 0.9rem; /* تصغير حجم الخط في الأزرار */
+
+        padding: 8px 15px;
+
+    }
+
+}
+
+
+
+/* استعلام للهواتف الصغيرة */
+
+@media (max-width: 480px) {
+
+    h1 {
+
+        font-size: 1.5rem;
+
+    }
+
+
+
+    .card {
+
+        width: 100%; /* البطاقة تأخذ 100% من العرض */
+
+        padding: 12px;
+
+    }
+
+
+
+    button {
+
+        font-size: 0.85rem;
+
+        padding: 7px 12px;
+
+    }
+
+  }
   </style>
 </head>
 <body>
