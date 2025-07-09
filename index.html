@@ -1,594 +1,222 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ar">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>إضافة مشارك</title>
-  <style>
 
+  <meta charset="UTF-8" />
 
-body {
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  <link rel="stylesheet" href="style.css">
 
-    direction: rtl;
+  <title>إضافة مشارك</title>
 
-    background: #0b1d3f;
+  <style>
+  body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f6fa;
+    direction: rtl;
+    color: #0b1d3f;
+    text-align: center;
+  }
 
-    color: #fff;
+  h1 {
+    color: #0b1d3f;
+    margin-bottom: 30px;
+  }
 
-    padding: 20px;
+  /* الأزرار العلوية */
+  button {
+    background-color: #0b1d3f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin: 10px 10px 20px;
+  }
 
-    margin: 0;
+  button:hover {
+    background-color: #142c66;
+  }
 
-    min-height: 100vh;
+  /* حقول الإدخال */
+  input[type="text"] {
+    width: 90%;
+    max-width: 400px;
+    padding: 12px;
+    margin: 10px auto;
+    display: block;
+    border: 2px solid #0b1d3f;
+    border-radius: 10px;
+    font-size: 16px;
+  }
 
-    display: flex;
+  /* زر الإضافة */
+  #addBtn {
+    background-color: #2196f3;
+    margin-top: 20px;
+  }
 
-    flex-direction: column;
+  #addBtn:hover {
+    background-color: #0d8ae3;
+  }
+@media (min-width: 1024px) {
+  input[type="text"] {
+    max-width: 500px;
+  }
 
-    align-items: center;
-
+  button {
+    font-size: 18px;
+  }
 }
 
+ 
+  </style>
 
-
-/* تنسيق العناوين */
-
-h1 {
-
-    margin-bottom: 30px;
-
-    font-weight: 700;
-
-    text-shadow: 0 0 8px rgba(0,0,0,0.6);
-
-    letter-spacing: 1.2px;
-
-}
-
-
-
-/* البطاقات */
-
-.card {
-
-    background: #fff;
-
-    color: #000;
-
-    border-radius: 15px;
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-
-    width: 350px;
-
-    margin: 15px auto;
-
-    padding: 20px 25px;
-
-    text-align: right;
-
-    position: relative;
-
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    cursor: default;
-
-}
-
-
-
-/* التفاعل مع البطاقة عند التمرير عليها */
-
-.card:hover {
-
-    transform: translateY(-8px);
-
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-
-}
-
-
-
-/* تخصيص لبطاقة حمراء */
-
-.card.red {
-
-    background: #ff4d4d;
-
-    color: #330000;
-
-    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.5);
-
-}
-
-
-
-/* تنسيق العناوين داخل البطاقة */
-
-.card h2 {
-
-    margin: 0 0 15px 0;
-
-    font-size: 1.5rem;
-
-    font-weight: 700;
-
-    letter-spacing: 0.8px;
-
-}
-
-
-
-/* تنسيق الفقرات داخل البطاقة */
-
-.card p {
-
-    margin: 7px 0;
-
-    font-size: 1.1rem;
-
-    line-height: 1.4;
-
-}
-
-
-
-/* زر التعديل */
-
-button {
-
-    background: #0b1d3f;
-
-    border: none;
-
-    color: #fff;
-
-    padding: 10px 18px;
-
-    border-radius: 30px;
-
-    font-size: 1rem;
-
-    font-weight: 600;
-
-    margin-top: 15px;
-
-    cursor: pointer;
-
-    box-shadow: 0 5px 15px rgba(11, 29, 63, 0.6);
-
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
-}
-
-
-
-button:hover {
-
-    background: #142c6b;
-
-    box-shadow: 0 8px 20px rgba(20, 44, 107, 0.8);
-
-}
-
-
-
-/* نافذة التعديل */
-
-#editModal {
-
-    position: fixed;
-
-    top: 0; left: 0; right: 0; bottom: 0;
-
-    background: rgba(11, 29, 63, 0.85);
-
-    display: none;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 1000;
-
-}
-
-
-
-#editModal .modal-content {
-
-    background: #fff;
-
-    padding: 25px 30px;
-
-    border-radius: 20px;
-
-    width: 370px;
-
-    text-align: right;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-
-    color: #000;
-
-}
-
-
-
-#editModal h2 {
-
-    margin-top: 0;
-
-    font-weight: 700;
-
-    font-size: 1.6rem;
-
-    letter-spacing: 0.7px;
-
-}
-
-
-
-#editModal label {
-
-    display: block;
-
-    margin-top: 15px;
-
-    font-weight: 600;
-
-    font-size: 1rem;
-
-    color: #0b1d3f;
-
-}
-
-
-
-#editModal input[type="text"],
-
-#editModal select {
-
-    width: 100%;
-
-    padding: 8px 12px;
-
-    margin-top: 6px;
-
-    border: 2px solid #0b1d3f;
-
-    border-radius: 10px;
-
-    font-size: 1rem;
-
-    outline: none;
-
-    transition: border-color 0.3s ease;
-
-}
-
-
-
-#editModal input[type="text"]:focus,
-
-#editModal select:focus {
-
-    border-color: #142c6b;
-
-}
-
-
-
-/* قائمة المعدات */
-
-#equipmentList {
-
-    margin-top: 8px;
-
-    list-style: none;
-
-    padding: 0;
-
-    max-height: 100px;
-
-    overflow-y: auto;
-
-}
-
-
-
-#equipmentList li {
-
-    background: #0b1d3f;
-
-    color: white;
-
-    padding: 7px 12px;
-
-    margin: 6px 0;
-
-    border-radius: 12px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    font-weight: 600;
-
-    font-size: 0.95rem;
-
-}
-
-
-
-#equipmentList li button {
-
-    background: #ff4d4d;
-
-    color: white;
-
-    border: none;
-
-    border-radius: 50%;
-
-    width: 22px;
-
-    height: 22px;
-
-    line-height: 20px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: background-color 0.2s ease;
-
-}
-
-
-
-#equipmentList li button:hover {
-
-    background-color: #cc0000;
-
-}
-
-
-
-/* أزرار حفظ وإلغاء */
-
-#editModal .buttons {
-
-    margin-top: 25px;
-
-    text-align: center;
-
-}
-
-
-
-#editModal .buttons button {
-
-    margin: 0 12px;
-
-    padding: 10px 28px;
-
-    border-radius: 25px;
-
-    font-weight: 700;
-
-    background: #0b1d3f;
-
-    color: #fff;
-
-    box-shadow: 0 6px 18px rgba(11, 29, 63, 0.7);
-
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
-}
-
-
-
-#editModal .buttons button:hover {
-
-    background: #142c6b;
-
-    box-shadow: 0 8px 22px rgba(20, 44, 107, 0.9);
-
-}
-
-
-
-/* حاوية البطاقات */
-
-#playersContainer {
-
-    display: grid;
-
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
-    gap: 20px;
-
-    width: 100%;
-
-    max-width: 1000px;
-
-    margin: auto;
-
-    padding: 10px;
-
-}
-
-
-
-/* استعلامات الوسائط لتهيئة التصميم على شاشات الهواتف */
-
-@media (max-width: 768px) {
-
-    body {
-
-        padding: 15px;
-
-    }
-
-
-
-    .card {
-
-        width: 100%; /* جعل البطاقة تأخذ عرض الشاشة */
-
-        padding: 15px;
-
-    }
-
-
-
-    h1 {
-
-        font-size: 1.8rem;
-
-    }
-
-
-
-    #playersContainer {
-
-        grid-template-columns: 1fr; /* جعل كل بطاقة في صف منفصل */
-
-        padding: 5px;
-
-    }
-
-
-
-    #editModal .modal-content {
-
-        width: 90%; /* تكبير العرض داخل النافذة */
-
-        padding: 20px;
-
-    }
-
-
-
-    button {
-
-        font-size: 0.9rem; /* تصغير حجم الخط في الأزرار */
-
-        padding: 8px 15px;
-
-    }
-
-}
-
-
-
-/* استعلام للهواتف الصغيرة */
-
-@media (max-width: 480px) {
-
-    h1 {
-
-        font-size: 1.5rem;
-
-    }
-
-
-
-    .card {
-
-        width: 100%; /* البطاقة تأخذ 100% من العرض */
-
-        padding: 12px;
-
-    }
-
-
-
-    button {
-
-        font-size: 0.85rem;
-
-        padding: 7px 12px;
-
-    }
-
-    }
-  </style>
 </head>
+
 <body>
-    <button onclick="location.href='manage.html'">الانتقال إلى صفحة الإدارة</button>
-    <button onclick="location.href='CB.html'"> صفحة حساب CB</button>
 
-  <h1>إضافة مشارك</h1>
+    <button onclick="location.href='manage.html'">الانتقال إلى صفحة الإدارة</button>
 
-  <input type="text" id="username" placeholder="اسم الحساب" /><br />
-  <input type="text" id="profileLink" placeholder="رابط الحساب" /><br />
+    <button onclick="location.href='CB.html'"> صفحة حساب CB</button>
 
-  <button id="addBtn">إضافة</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getDatabase,
-      ref,
-      set,
-      get,
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    const firebaseConfig = {
-  apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
-  authDomain: "htawer-2289b.firebaseapp.com",
-  databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
-  projectId: "htawer-2289b",
-  storageBucket: "htawer-2289b.firebasestorage.app",
-  messagingSenderId: "950146827456",
-  appId: "1:950146827456:web:4e440a303625080e2b1925",
-  measurementId: "G-E7483RPE05"
+  <h1>إضافة مشارك</h1>
+
+
+
+  <input type="text" id="username" placeholder="اسم الحساب" /><br />
+
+  <input type="text" id="profileLink" placeholder="رابط الحساب" /><br />
+
+
+
+  <button id="addBtn">إضافة</button>
+
+
+
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+    import {
+
+      getDatabase,
+
+      ref,
+
+      set,
+
+      get,
+
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+
+
+    const firebaseConfig = {
+
+  apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
+
+  authDomain: "htawer-2289b.firebaseapp.com",
+
+  databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
+
+  projectId: "htawer-2289b",
+
+  storageBucket: "htawer-2289b.firebasestorage.app",
+
+  messagingSenderId: "950146827456",
+
+  appId: "1:950146827456:web:4e440a303625080e2b1925",
+
+  measurementId: "G-E7483RPE05"
+
 };
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
 
-    const usernameInput = document.getElementById("username");
-    const profileLinkInput = document.getElementById("profileLink");
+    const app = initializeApp(firebaseConfig);
 
-    async function addParticipant() {
-      const username = usernameInput.value.trim();
-      const profileLink = profileLinkInput.value.trim();
+    const db = getDatabase(app);
 
-      if (!username || !profileLink) {
-        alert("يرجى ملء كل الحقول.");
-        return;
-      }
 
-      // احصل على الرقم التالي تلقائيًا
-      const playersRef = ref(db, "players");
-      const snapshot = await get(playersRef);
-      const number = snapshot.exists() ? snapshot.size + 1 : 1;
 
-      const newPlayerKey = `player_${Date.now()}`;
+    const usernameInput = document.getElementById("username");
 
-      await set(ref(db, "players/" + newPlayerKey), {
-        username,
-        profileLink,
-        number,
-        status: "مشارك",
-        points: 0,
-        equipment: [],
-      });
+    const profileLinkInput = document.getElementById("profileLink");
 
-      alert("تمت إضافة المشارك بنجاح ✅");
-      usernameInput.value = "";
-      profileLinkInput.value = "";
-    }
 
-    document.getElementById("addBtn").addEventListener("click", addParticipant);
-  </script>
 
-</body>
+    async function addParticipant() {
+
+      const username = usernameInput.value.trim();
+
+      const profileLink = profileLinkInput.value.trim();
+
+
+
+      if (!username || !profileLink) {
+
+        alert("يرجى ملء كل الحقول.");
+
+        return;
+
+      }
+
+
+
+      // احصل على الرقم التالي تلقائيًا
+
+      const playersRef = ref(db, "players");
+
+      const snapshot = await get(playersRef);
+
+      const number = snapshot.exists() ? snapshot.size + 1 : 1;
+
+
+
+      const newPlayerKey = `player_${Date.now()}`;
+
+
+
+      await set(ref(db, "players/" + newPlayerKey), {
+
+        username,
+
+        profileLink,
+
+        number,
+
+        status: "مشارك",
+
+        points: 0,
+
+        equipment: [],
+
+      });
+
+
+
+      alert("تمت إضافة المشارك بنجاح ✅");
+
+      usernameInput.value = "";
+
+      profileLinkInput.value = "";
+
+    }
+
+
+
+    document.getElementById("addBtn").addEventListener("click", addParticipant);
+
+  </script>
+
+
+
+</body> 
 </html>
