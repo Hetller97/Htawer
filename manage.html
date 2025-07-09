@@ -1,345 +1,278 @@
 <!DOCTYPE html>
 <html lang="ar">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>صفحة الإدارة</title>
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f6fa;
-      direction: rtl;
-      color: #0b1d3f;
-    }
-    h1 {
-      text-align: center;
-      color: #0b1d3f;
-      margin-bottom: 30px;
-    }
-    button {
-      background-color: #0b1d3f;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      margin-bottom: 20px;
-    }
-    button:hover {
-      background-color: #142c66;
-    }
-    #searchInput {
-      display: block;
-      margin: 0 auto 30px auto;
-      border: 2px solid #0b1d3f;
-      border-radius: 10px;
-      padding: 12px;
-      width: 90%;
-      max-width: 400px;
-      font-size: 16px;
-    }
-    #playersContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      text-align: right;
-      position: relative;
-      transition: 0.3s;
-    }
-    .card h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    .card p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #333;
-    }
-    .card button {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      background-color: #2196f3;
-      font-size: 14px;
-      padding: 8px 12px;
-    }
-    .card.red {
-      border-right: 5px solid #e53935;
-      background-color: #fff4f4;
-    }
-    #editModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-    .modal-content label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    .modal-content input,
-    .modal-content select,
-    .modal-content textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-    }
-    #equipmentList {
-      list-style: none;
-      padding: 0;
-      margin-top: 10px;
-    }
-    #equipmentList li {
-      background-color: #f0f0f0;
-      padding: 8px 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #equipmentList li button {
-      background-color: #e53935;
-      padding: 4px 8px;
-      font-size: 14px;
-      border-radius: 50%;
-    }
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 25px;
-    }
-    .buttons button {
-      width: 48%;
-      font-size: 16px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة الإدارة</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f6fa;
+      direction: rtl;
+      color: #0b1d3f;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0b1d3f;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #0b1d3f;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      background-color: #142c66;
+    }
+
+    #searchInput {
+      display: block;
+      margin: 0 auto 30px auto;
+      border: 2px solid #0b1d3f;
+      border-radius: 10px;
+      padding: 12px;
+      width: 90%;
+      max-width: 400px;
+      font-size: 16px;
+    }
+
+    #playersContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: right;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .card button {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background-color: #2196f3;
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+
+    .card.red {
+      border-right: 5px solid #e53935;
+      background-color: #fff4f4;
+    }
+
+    #editModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    .buttons button {
+      width: 48%;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-  <button onclick="location.href='index.html'">العودة إلى تسجيل المشاركين</button>
-  <h1>صفحة الإدارة - إدارة المشاركين</h1>
-  <input type="text" id="searchInput" placeholder="ابحث باسم الحساب أو رقم اللاعب">
-  <div id="playersContainer"></div>
+  <button onclick="location.href='index.html'">العودة إلى تسجيل المشاركين</button>
+  <h1>صفحة الإدارة - إدارة المشاركين</h1>
+  <input type="text" id="searchInput" placeholder="ابحث باسم الحساب أو رقم اللاعب">
+  <div id="playersContainer"></div>
 
-  <div id="editModal">
-    <div class="modal-content">
-      <h2>تعديل بيانات اللاعب</h2>
-      <label>اسم الحساب</label>
-      <input type="text" id="editUsername" />
-      <label>رابط الحساب</label>
-      <input type="text" id="editProfileLink" />
-      <label>الحالة</label>
-      <select id="editStatus">
-        <option value="مشارك">مشارك</option>
-        <option value="مقصي">مقصي</option>
-      </select>
-      <label>النقاط</label>
-      <input type="text" id="editPoints" />
+  <!-- نافذة تعديل بيانات اللاعب -->
+  <div id="editModal">
+    <div class="modal-content">
+      <h2>تعديل بيانات اللاعب</h2>
+      <label>اسم الحساب</label>
+      <input type="text" id="editUsername" />
 
-      <label>المعدات</label>
-      <input type="text" id="newEquipment" placeholder="أضف معدات واضغط Enter" />
-      <ul id="equipmentList"></ul>
+      <label>رابط الحساب</label>
+      <input type="text" id="editProfileLink" />
 
-      <hr>
-      <label>الصق بطاقة اللاعب هنا</label>
-      <textarea id="cardInput" rows="6" placeholder="🎮 بطاقة اللاعب\nرقم: ...\nالهجوم: ..."></textarea>
-      <button onclick="parseCardText()">تحليل البطاقة</button>
+      <label>الحالة</label>
+      <select id="editStatus">
+        <option value="مشارك">مشارك</option>
+        <option value="مقصي">مقصي</option>
+      </select>
 
-      <label>الهجوم</label>
-      <input type="number" id="statAtk">
-      <label>الصحة</label>
-      <input type="number" id="statHp">
-      <label>الدفاع</label>
-      <input type="number" id="statDef">
-      <label>عدد مرات التصدي</label>
-      <input type="number" id="statBlock">
-      <label>الخبرة</label>
-      <input type="number" id="statXp">
+      <label>النقاط</label>
+      <input type="text" id="editPoints" />
 
-      <div class="buttons">
-        <button id="saveBtn">حفظ</button>
-        <button id="cancelBtn">إلغاء</button>
-      </div>
-    </div>
-  </div>
+      <label>بطاقة اللاعب</label>
+      <textarea id="editPlayerCard" rows="6" placeholder="🎮 بطاقة اللاعب..."></textarea>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+      <div class="buttons">
+        <button id="saveBtn">حفظ</button>
+        <button id="cancelBtn">إلغاء</button>
+      </div>
+    </div>
+  </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
-      authDomain: "htawer-2289b.firebaseapp.com",
-      databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
-      projectId: "htawer-2289b",
-      storageBucket: "htawer-2289b.firebasestorage.app",
-      messagingSenderId: "950146827456",
-      appId: "1:950146827456:web:4e440a303625080e2b1925",
-      measurementId: "G-E7483RPE05"
-    };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const playersRef = ref(db, "players");
-    let players = {};
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4lVFojsfwliOunYjl399W9ZGrsFFMAKY",
+      authDomain: "htawer-2289b.firebaseapp.com",
+      databaseURL: "https://htawer-2289b-default-rtdb.firebaseio.com",
+      projectId: "htawer-2289b",
+      storageBucket: "htawer-2289b.appspot.com",
+      messagingSenderId: "950146827456",
+      appId: "1:950146827456:web:4e440a303625080e2b1925",
+      measurementId: "G-E7483RPE05"
+    };
 
-    const editModal = document.getElementById("editModal");
-    const editUsername = document.getElementById("editUsername");
-    const editProfileLink = document.getElementById("editProfileLink");
-    const editStatus = document.getElementById("editStatus");
-    const editPoints = document.getElementById("editPoints");
-    const newEquipment = document.getElementById("newEquipment");
-    const equipmentList = document.getElementById("equipmentList");
-    const saveBtn = document.getElementById("saveBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const playersRef = ref(db, "players");
+    const playersContainer = document.getElementById("playersContainer");
+    const searchInput = document.getElementById("searchInput");
 
-    const statAtk = document.getElementById("statAtk");
-    const statHp = document.getElementById("statHp");
-    const statDef = document.getElementById("statDef");
-    const statBlock = document.getElementById("statBlock");
-    const statXp = document.getElementById("statXp");
-    const cardInput = document.getElementById("cardInput");
+    const editModal = document.getElementById("editModal");
+    const editUsername = document.getElementById("editUsername");
+    const editProfileLink = document.getElementById("editProfileLink");
+    const editStatus = document.getElementById("editStatus");
+    const editPoints = document.getElementById("editPoints");
+    const editPlayerCard = document.getElementById("editPlayerCard");
+    const saveBtn = document.getElementById("saveBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
 
-    let currentEditingKey = null;
-    let currentEquipment = [];
+    let players = {};
+    let currentEditingKey = null;
 
-    onValue(playersRef, (snapshot) => {
-      players = snapshot.val() || {};
-      renderPlayers(players);
-    });
+    onValue(playersRef, (snapshot) => {
+      players = snapshot.val() || {};
+      renderPlayers(players);
+    });
 
-    document.getElementById("searchInput").addEventListener("input", () => renderPlayers(players));
+    searchInput.addEventListener("input", () => renderPlayers(players));
 
-    const playersContainer = document.getElementById("playersContainer");
+    function renderPlayers(players) {
+      const searchValue = searchInput.value.trim().toLowerCase();
+      playersContainer.innerHTML = "";
 
-    function renderPlayers(players) {
-      const searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
-      playersContainer.innerHTML = "";
-      for (const key in players) {
-        const p = players[key];
-        if (searchValue && !p.username.toLowerCase().includes(searchValue) && !String(p.number).includes(searchValue)) continue;
-        const card = document.createElement("div");
-        card.className = "card";
-        if (p.status === "مقصي") card.classList.add("red");
-        const equipmentText = (p.equipment && p.equipment.length > 0) ? p.equipment.join(", ") : "لا معدات";
-        card.innerHTML = `
-          <h2>${p.username} (#${p.number})</h2>
-          <p>النقاط: ${p.points ?? 0}</p>
-          <p>الحالة: ${p.status}</p>
-          <p>المعدات: ${equipmentText}</p>
-          <button data-key="${key}">تعديل</button>
-        `;
-        card.querySelector("button").addEventListener("click", () => openEditModal(key, p));
-        playersContainer.appendChild(card);
-      }
-    }
+      for (const key in players) {
+        const p = players[key];
+        if (searchValue && !p.username.toLowerCase().includes(searchValue) && !String(p.number).includes(searchValue)) continue;
 
-    function openEditModal(key, player) {
-      currentEditingKey = key;
-      editUsername.value = player.username;
-      editProfileLink.value = player.profileLink;
-      editStatus.value = player.status;
-      editPoints.value = player.points ?? 0;
-      currentEquipment = player.equipment ?? [];
-      statAtk.value = player.atk ?? 0;
-      statHp.value = player.hp ?? 0;
-      statDef.value = player.def ?? 0;
-      statBlock.value = player.block ?? 0;
-      statXp.value = player.xp ?? 0;
-      cardInput.value = "";
-      renderEquipment();
-      editModal.style.display = "flex";
-    }
+        const card = document.createElement("div");
+        card.className = "card";
+        if (p.status === "مقصي") card.classList.add("red");
 
-    function renderEquipment() {
-      equipmentList.innerHTML = "";
-      currentEquipment.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        const btn = document.createElement("button");
-        btn.textContent = "×";
-        btn.addEventListener("click", () => {
-          currentEquipment.splice(index, 1);
-          renderEquipment();
-        });
-        li.appendChild(btn);
-        equipmentList.appendChild(li);
-      });
-    }
+        card.innerHTML = `
+          <h2>${p.username} (#${p.number})</h2>
+          <p>النقاط: ${p.points ?? 0}</p>
+          <p>الحالة: ${p.status}</p>
+          <p>🎮 بطاقة اللاعب:</p>
+          <pre>${p.card ?? "لا توجد بطاقة"}</pre>
+          <button data-key="${key}">تعديل</button>
+        `;
 
-    newEquipment.addEventListener("keypress", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const val = newEquipment.value.trim();
-        if (val) {
-          currentEquipment.push(val);
-          newEquipment.value = "";
-          renderEquipment();
-        }
-      }
-    });
+        playersContainer.appendChild(card);
+        card.querySelector("button").addEventListener("click", () => openEditModal(key, p));
+      }
+    }
 
-    saveBtn.addEventListener("click", async () => {
-      if (!currentEditingKey) return;
-      const updatedData = {
-        username: editUsername.value.trim(),
-        profileLink: editProfileLink.value.trim(),
-        status: editStatus.value,
-        points: Number(editPoints.value) || 0,
-        equipment: currentEquipment,
-        atk: Number(statAtk.value) || 0,
-        hp: Number(statHp.value) || 0,
-        def: Number(statDef.value) || 0,
-        block: Number(statBlock.value) || 0,
-        xp: Number(statXp.value) || 0
-      };
-      await update(ref(db, "players/" + currentEditingKey), updatedData);
-      editModal.style.display = "none";
-    });
+    function openEditModal(key, player) {
+      currentEditingKey = key;
+      editUsername.value = player.username;
+      editProfileLink.value = player.profileLink;
+      editStatus.value = player.status;
+      editPoints.value = player.points ?? 0;
+      editPlayerCard.value = player.card ?? "";
+      editModal.style.display = "flex";
+    }
 
-    cancelBtn.addEventListener("click", () => editModal.style.display = "none");
+    saveBtn.addEventListener("click", async () => {
+      if (!currentEditingKey) return;
 
-    window.parseCardText = function () {
-      const card = cardInput.value;
-      statAtk.value = extractNumber(card, "الهجوم:");
-      statHp.value = extractNumber(card, "الصحة:");
-      statDef.value = extractNumber(card, "الدفاع:");
-      statBlock.value = extractNumber(card, "عدد مرات التصدي:");
-      statXp.value = extractNumber(card, "الخبرة:");
-    }
+      const updatedData = {
+        username: editUsername.value.trim(),
+        profileLink: editProfileLink.value.trim(),
+        status: editStatus.value,
+        points: Number(editPoints.value) || 0,
+        card: editPlayerCard.value.trim()
+      };
 
-    function extractNumber(text, label) {
-      const regex = new RegExp(label + "\\s*(\u200f)?([\u0660-\u0669\d\.]+)");
-      const match = text.match(regex);
-      return match ? parseFloat(match[2]) : 0;
-    }
-  </script>
+      await update(ref(db, "players/" + currentEditingKey), updatedData);
+      editModal.style.display = "none";
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      editModal.style.display = "none";
+    });
+  </script>
 </body>
 </html>
